@@ -24,11 +24,12 @@ class ServiceCallbacks(Service):
             return('Port configured by: {}; {}'.format(username, email))
        
         vars = ncs.template.Variables()
-        vars.add('DEVICE', device)
-        vars.add('INTERFACE', interface)
-        vars.add('DESCRIPTION', descr())
-        template = ncs.template.Template(service)
-        template.apply('interface-descriptions-template', vars)
+        for interface in service.interface:
+            vars.add('DEVICE', device)
+            vars.add('INTERFACE', interface)
+            vars.add('DESCRIPTION', descr())
+            template = ncs.template.Template(service)
+            template.apply('interface-descriptions-template', vars)
 
     # The pre_modification() and post_modification() callbacks are optional,
     # and are invoked outside FASTMAP. pre_modification() is invoked before
