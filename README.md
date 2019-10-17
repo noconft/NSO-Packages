@@ -1,5 +1,6 @@
 # NSO-Packages
 ... for interview purposes.
 
-Added int. description populated from get API.
-Added support for multiple interfaces.
+- Interface description now populated from API request.
+
+- Added support for multiple interfaces.
