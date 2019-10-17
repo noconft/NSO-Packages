@@ -43,5 +43,8 @@ module interface-descriptions {
     leaf interface {
       type string;
     }
+    leaf description {
+      type string;
+    }
   }
 }
