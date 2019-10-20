@@ -16,6 +16,7 @@ class ServiceCallbacks(Service):
         device = service.device
         interface = service.interface
 
+        # Let's populate that interface description field with an API call
         def descr():
             userDB = requests.get('https://jsonplaceholder.typicode.com/users/8')
             jsonObj = userDB.json()
