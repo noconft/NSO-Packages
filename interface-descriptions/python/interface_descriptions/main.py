@@ -1,7 +1,7 @@
 # -*- mode: python; python-indent: 4 -*-
 import ncs
 from ncs.application import Service
-
+import requests
 
 # ------------------------
 # SERVICE CALLBACK EXAMPLE
@@ -15,14 +15,22 @@ class ServiceCallbacks(Service):
         self.log.info('Service create(service=', service._path, ')')
         device = service.device
         interface = service.interface
-        description = service.description
 
+        # Let's populate that interface description field with an API call
+        def descr():
+            userDB = requests.get('https://jsonplaceholder.typicode.com/users/8')
+            jsonObj = userDB.json()
+            username = jsonObj['username']
+            email = jsonObj['email']
+            return('Port configured by: {}; {}'.format(username, email))
+       
         vars = ncs.template.Variables()
-        vars.add('DEVICE', device)
-        vars.add('INTERFACE', interface)
-        vars.add('DESCRIPTION', description)
-        template = ncs.template.Template(service)
-        template.apply('interface-descriptions-template', vars)
+        for interface in service.interface:
+            vars.add('DEVICE', device)
+            vars.add('INTERFACE', interface)
+            vars.add('DESCRIPTION', descr())
+            template = ncs.template.Template(service)
+            template.apply('interface-descriptions-template', vars)
 
     # The pre_modification() and post_modification() callbacks are optional,
     # and are invoked outside FASTMAP. pre_modification() is invoked before

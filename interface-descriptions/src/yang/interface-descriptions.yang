@@ -35,16 +35,14 @@ module interface-descriptions {
     ncs:servicepoint interface-descriptions-servicepoint;
 
     // may replace this with other ways of refering to the devices.
+
     leaf device {
       type leafref {
         path "/ncs:devices/ncs:device/ncs:name";
       }
     }
-    leaf interface {
-      type string;
-    }
-    leaf description {
-      type string;
+    leaf-list interface {
+        type string;
     }
   }
 }
