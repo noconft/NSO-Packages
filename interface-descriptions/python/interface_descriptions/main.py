@@ -24,8 +24,8 @@ class ServiceCallbacks(Service):
             email = jsonObj['email']
             return('Port configured by: {}; {}'.format(username, email))
        
-        vars = ncs.template.Variables()
-        for interface in service.interface:
+        for interface in service.interface: 
+            vars = ncs.template.Variables()
             vars.add('DEVICE', device)
             vars.add('INTERFACE', interface)
             vars.add('DESCRIPTION', descr())
