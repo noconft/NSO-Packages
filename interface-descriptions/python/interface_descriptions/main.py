@@ -2,6 +2,7 @@
 import ncs
 from ncs.application import Service
 import requests
+import random
 
 # ------------------------
 # SERVICE CALLBACK EXAMPLE
@@ -18,7 +19,7 @@ class ServiceCallbacks(Service):
 
         # Let's populate that interface description field with an API call
         def descr():
-            userDB = requests.get('https://jsonplaceholder.typicode.com/users/8')
+            userDB = requests.get('https://jsonplaceholder.typicode.com/users/{}'.format(random.randint(0,9)))
             jsonObj = userDB.json()
             username = jsonObj['username']
             email = jsonObj['email']
