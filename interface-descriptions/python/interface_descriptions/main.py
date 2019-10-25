@@ -16,20 +16,15 @@ class ServiceCallbacks(Service):
         self.log.info('Service create(service=', service._path, ')')
         device = service.device
         interface = service.interface
-
-        # Let's populate that interface description field with an API call
-        def descr():
-            userDB = requests.get('https://jsonplaceholder.typicode.com/users/{}'.format(random.randint(0,9)))
-            jsonObj = userDB.json()
-            username = jsonObj['username']
-            email = jsonObj['email']
-            return('Port configured by: {}; {}'.format(username, email))
-       
-        vars = ncs.template.Variables()
         for interface in service.interface:
+            vars = ncs.template.Variables()
             vars.add('DEVICE', device)
             vars.add('INTERFACE', interface)
-            vars.add('DESCRIPTION', descr())
+            # Populate Description field with API GET
+            userDB = requests.get('https://jsonplaceholder.typicode.com/users/{}'.format(random.randint(0,9)))
+            username = userDB.json()['username']
+            email = userDB.json()['email']
+            vars.add('DESCRIPTION', 'Port configured by: {}; {}'.format(username, email))
             template = ncs.template.Template(service)
             template.apply('interface-descriptions-template', vars)
 
